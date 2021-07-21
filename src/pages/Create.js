@@ -6,6 +6,8 @@ import KeyboardArrowRightIcon from "@material-ui/icons/KeyboardArrowRight";
 import { makeStyles } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 import { useState } from "react";
+import { useHistory } from "react-router-dom";
+import axios from "axios";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
@@ -22,6 +24,7 @@ const useStyles = makeStyles({
 
 export default function Create() {
   const classes = useStyles();
+  const history = useHistory();
   const [noteTitle, setNoteTitle] = useState("");
   const [noteDetails, setNoteDetails] = useState("");
   const [noteTitleError, setNoteTitleError] = useState(false);
@@ -39,6 +42,13 @@ export default function Create() {
       setNoteDetailsError(true);
     }
     if (noteTitle && noteDetails) {
+      axios
+        .post("http://localhost:8000/notes", {
+          title: noteTitle,
+          details: noteDetails,
+          category: category,
+        })
+        .then(() => history.push("/"));
     }
   };
 
